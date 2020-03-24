@@ -13,6 +13,8 @@ def initialize(
     user_dir=defaults.USER_DIR_NAME,
     user_key=defaults.USER_KEY_NAME
 ):
+    """Initializes configuration."""
+
     log = logging.getLogger()
 
     # Check for existing config file

@@ -20,8 +20,9 @@ def get_input_args():
     # Generate command
     gen_parser = subparsers.add_parser('generate', help='generate and sign a key')
     key_type_group = gen_parser.add_mutually_exclusive_group(required=True)
-    key_type_group.add_argument('-H', '--host', help='specifies a host key to generate', action='store_true')
-    key_type_group.add_argument('-u', '--user', help='specifies a user key to generate', action='store_true')
+    key_type_group.add_argument('--host', help='specifies a host key to generate', action='store_true')
+    key_type_group.add_argument('--user', help='specifies a user key to generate', action='store_true')
+    gen_parser.add_argument('-r', '--role', type=str, action='append', help='specifies role(s) to assign to a user key')
     gen_parser.add_argument('name', type=str, help='name to give to the key')
 
     # Revoke command
@@ -43,7 +44,11 @@ def main():
 
     if args.action == 'generate':
         if args.host:
+            if args.role is not None and len(args.role):
+                log.warn('Got roles for host key, which are not used in this mode')
             generate.generate_host_key(args.name)
+        elif args.user:
+            generate.generate_user_key(args.name, args.role)
     elif args.action == 'init':
         initialize.initialize(
             domain=args.domain,
