@@ -34,14 +34,24 @@ class SSHConfig:
 
         return self.__data.get('host').get('domain')
 
+    def get_host_serial(self):
+        """Gets the current host serial number from configuration."""
+
+        return self.__data.get('host').get('serial')
+
+    def get_user_serial(self):
+        """Gets the current user serial number from configuration."""
+
+        return self.__data.get('user').get('serial')
+
     def host_config_stamp(self, path, name):
         """Creates a file with metadata for host keys."""
 
         full_name = name + '.' + self.get_host_domain()
         data = {
             'certificateId': name,
-            'hostnames': name + ',' + full_name,
-            'serial': self.__data.get('host').get('serial')
+            'hostnames': [name, full_name],
+            'serial': self.get_host_serial()
         }
 
         with open(os.path.join(path, defaults.DATA_FILE_NAME), 'w') as file_handler:
@@ -50,14 +60,14 @@ class SSHConfig:
     def increment_host_serial_save(self):
         """Increments the serial for host configuration and saves configuration to disk."""
 
-        old_serial = self.__data.get('host').get('serial')
+        old_serial = self.get_host_serial()
         self.__data.get('host')['serial'] = old_serial + 1
         self.__save()
 
     def increment_user_serial_save(self):
         """Increments the serial for user configuration and saves configuration to disk."""
 
-        old_serial = self.__data.get('user').get('serial')
+        old_serial = self.get_user_serial()
         self.__data.get('user')['serial'] = old_serial + 1
         self.__save()
 
@@ -67,7 +77,7 @@ class SSHConfig:
         data = {
             'identity': username,
             'roles': roles,
-            'serial': self.__data.get('user').get('serial')
+            'serial': self.get_user_serial()
         }
 
         with open(os.path.join(path, defaults.DATA_FILE_NAME), 'w') as file_handler:

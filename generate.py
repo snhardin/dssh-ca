@@ -34,17 +34,15 @@ def generate_host_key(name, host_dir=defaults.HOST_DIR_NAME, host_key=defaults.H
     # Generate the key for the host.
     try:
         subprocess.check_call(['ssh-keygen', '-t', 'ed25519', '-f', os.path.join(complete_path, 'ssh_host_ed25519_key')])
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         log.error('Failed to create host key')
         sys.exit(1)
 
     # Sign the key with the host CA.
     try:
-        subprocess.check_call(['ssh-keygen', '-s', os.path.join(host_dir, host_key),
-            '-I', name, '-h',
-            '-n', name, '-n', full_domain,
-            os.path.join(complete_path, 'ssh_host_ed25519_key.pub')])
-    except CalledProcessError:
+        subprocess.check_call(['ssh-keygen', '-s', os.path.join(host_dir, host_key), '-I', name, '-h',
+            '-n', name, '-n', full_domain, '-z', str(c.get_host_serial()), os.path.join(complete_path, 'ssh_host_ed25519_key.pub')])
+    except subprocess.CalledProcessError:
         log.error('Failed to sign new host key')
         sys.exit(1)
 
@@ -83,12 +81,12 @@ def generate_user_key(username, roles=[], user_dir=defaults.USER_DIR_NAME, user_
     # Generate the key for the host.
     try:
         subprocess.check_call(['ssh-keygen', '-t', 'ed25519', '-f', os.path.join(complete_path, 'id_ed25519')])
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         log.error('Failed to create user key')
         sys.exit(1)
 
     # Sign the key, ensuring that all roles are attached.
-    args = ['ssh-keygen', '-s', os.path.join(user_dir, user_key), '-I', username, '-n', username]
+    args = ['ssh-keygen', '-s', os.path.join(user_dir, user_key), '-I', username, '-n', username, '-z', str(c.get_user_serial())]
     if roles is not None:
         for role in roles:
             args.append('-n')
@@ -97,7 +95,7 @@ def generate_user_key(username, roles=[], user_dir=defaults.USER_DIR_NAME, user_
     args.append(os.path.join(complete_path, 'id_ed25519.pub'))
     try:
         subprocess.check_call(args)
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         log.error('Failed to sign new user key')
         sys.exit(1)
 

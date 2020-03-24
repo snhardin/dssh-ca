@@ -42,13 +42,13 @@ def initialize(
 
     try:
         subprocess.check_call(['ssh-keygen', '-t', 'ed25519', '-f', os.path.join(user_dir, user_key)])
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         log.error('Failed to create user CA key')
         sys.exit(1)
 
     try:
         subprocess.check_call(['ssh-keygen', '-t', 'ed25519', '-f', os.path.join(host_dir, host_key)])
-    except CalledProcessError:
+    except subprocess.CalledProcessError:
         log.error('Failed to create host CA key')
         sys.exit(1)
 
