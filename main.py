@@ -1,5 +1,8 @@
 import argparse
 import generate
+import initialize
+import logging
+import sys
 
 def get_input_args():
     """Validates and retrieves the input arguments for the program."""
@@ -12,6 +15,7 @@ def get_input_args():
 
     # Initialize command
     init_parser = subparsers.add_parser('init', help='initialize CA and metadata')
+    init_parser.add_argument('domain', type=str, help='the domain to associate with host keys signed by the CA')
 
     # Generate command
     gen_parser = subparsers.add_parser('generate', help='generate and sign a key')
@@ -29,12 +33,21 @@ def main():
     """Main method of the utility."""
 
     args = get_input_args()
-    print(args)
+
+    # Set up the logger for the program.
+    log = logging.getLogger()
+    log_handler = logging.StreamHandler(sys.stdout)
+    log_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(filename)s: %(message)s'))
+    log.addHandler(log_handler)
+    log.setLevel(logging.INFO)
 
     if args.action == 'generate':
-        generate.hello(args.name, args.user)
+        if args.host:
+            generate.generate_host_key(args.name)
     elif args.action == 'init':
-        raise NotImplementedError
+        initialize.initialize(
+            domain=args.domain,
+        )
     elif args.action == 'revoke':
         raise NotImplementedError
     else:

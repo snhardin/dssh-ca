@@ -1,0 +1,6 @@
+CONTROL_FILE_NAME = '.ssh.json'
+DATA_FILE_NAME = '.data.json'
+HOST_DIR_NAME = 'host'
+HOST_KEY_NAME = 'ca-host'
+USER_DIR_NAME = 'user'
+USER_KEY_NAME = 'ca-user'
