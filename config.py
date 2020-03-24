@@ -60,16 +60,20 @@ class SSHConfig:
     def increment_host_serial_save(self):
         """Increments the serial for host configuration and saves configuration to disk."""
 
-        old_serial = self.get_host_serial()
-        self.__data.get('host')['serial'] = old_serial + 1
+        new_serial = self.get_host_serial() + 1
+        self.__data.get('host')['serial'] = new_serial
         self.__save()
+
+        return new_serial
 
     def increment_user_serial_save(self):
         """Increments the serial for user configuration and saves configuration to disk."""
 
-        old_serial = self.get_user_serial()
-        self.__data.get('user')['serial'] = old_serial + 1
+        new_serial = self.get_user_serial() + 1
+        self.__data.get('user')['serial'] = new_serial
         self.__save()
+
+        return new_serial
 
     def user_config_stamp(self, path, username, roles):
         """Creates a file with metadata for user keys."""

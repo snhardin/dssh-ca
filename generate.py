@@ -50,8 +50,8 @@ def generate_host_key(name, host_dir=defaults.HOST_DIR_NAME, host_key=defaults.H
     c.host_config_stamp(complete_path, name)
     log.info('Created key for host %s', full_domain)
 
-    c.increment_host_serial_save()
-    log.info('Increment host serial counter')
+    new_serial = c.increment_host_serial_save()
+    log.info('Increment host serial counter to %d', new_serial)
 
 def generate_user_key(username, roles=[], user_dir=defaults.USER_DIR_NAME, user_key=defaults.USER_KEY_NAME):
     """Generates a key for a user and signs it with the user CA."""
@@ -103,5 +103,5 @@ def generate_user_key(username, roles=[], user_dir=defaults.USER_DIR_NAME, user_
     c.user_config_stamp(complete_path, username, roles)
     log.info('Key created for user %s', username)
     
-    c.increment_user_serial_save()
-    log.info('Increment user serial number')
+    new_serial = c.increment_user_serial_save()
+    log.info('Increment user serial number to %d', new_serial)
