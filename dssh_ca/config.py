@@ -1,4 +1,4 @@
-import defaults
+import dssh_ca.defaults
 import json
 import os
 
@@ -8,7 +8,7 @@ class SSHConfig:
     __data = {}
     __path = ''
 
-    def __init__(self, control_path=defaults.CONTROL_FILE_NAME):
+    def __init__(self, control_path=dssh_ca.defaults.CONTROL_FILE_NAME):
         """Loads configuration into memory."""
 
         if os.path.exists(control_path):
@@ -54,7 +54,7 @@ class SSHConfig:
             'serial': self.get_host_serial()
         }
 
-        with open(os.path.join(path, defaults.DATA_FILE_NAME), 'w') as file_handler:
+        with open(os.path.join(path, dssh_ca.defaults.DATA_FILE_NAME), 'w') as file_handler:
             json.dump(data, file_handler)
 
     def increment_host_serial_save(self):
@@ -84,5 +84,5 @@ class SSHConfig:
             'serial': self.get_user_serial()
         }
 
-        with open(os.path.join(path, defaults.DATA_FILE_NAME), 'w') as file_handler:
+        with open(os.path.join(path, dssh_ca.defaults.DATA_FILE_NAME), 'w') as file_handler:
             json.dump(data, file_handler)

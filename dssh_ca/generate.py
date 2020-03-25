@@ -1,17 +1,17 @@
-import config
-import defaults
+import dssh_ca.config
+import dssh_ca.defaults
 import logging
 import os
 import subprocess
 import sys
 
-def generate_host_key(name, host_dir=defaults.HOST_DIR_NAME, host_key=defaults.HOST_KEY_NAME):
+def generate_host_key(name, host_dir=dssh_ca.defaults.HOST_DIR_NAME, host_key=dssh_ca.defaults.HOST_KEY_NAME):
     """Generates a key for a host machine and signs it with the host CA."""
 
     # Set up logging and attempt to load configuration.
     log = logging.getLogger()
     try:
-        c = config.SSHConfig()
+        c = dssh_ca.config.SSHConfig()
     except FileNotFoundError:
         log.error('Could not find control configuration. Did you initialize first?')
         sys.exit(1)
@@ -53,13 +53,13 @@ def generate_host_key(name, host_dir=defaults.HOST_DIR_NAME, host_key=defaults.H
     new_serial = c.increment_host_serial_save()
     log.info('Increment host serial counter to %d', new_serial)
 
-def generate_user_key(username, roles=[], user_dir=defaults.USER_DIR_NAME, user_key=defaults.USER_KEY_NAME):
+def generate_user_key(username, roles=[], user_dir=dssh_ca.defaults.USER_DIR_NAME, user_key=dssh_ca.defaults.USER_KEY_NAME):
     """Generates a key for a user and signs it with the user CA."""
 
     # Set up logging and attempt to load configuration.
     log = logging.getLogger()
     try:
-        c = config.SSHConfig()
+        c = dssh_ca.config.SSHConfig()
     except FileNotFoundError:
         log.error('Could not find control configuration. Did you initialize first?')
         sys.exit(1)

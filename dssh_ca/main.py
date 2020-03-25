@@ -1,6 +1,6 @@
+import dssh_ca.generate
+import dssh_ca.initialize
 import argparse
-import generate
-import initialize
 import logging
 import sys
 
@@ -46,11 +46,11 @@ def main():
         if args.host:
             if args.role is not None and len(args.role):
                 log.warn('Got roles for host key, which are not used in this mode')
-            generate.generate_host_key(args.name)
+            dssh_ca.generate.generate_host_key(args.name)
         elif args.user:
-            generate.generate_user_key(args.name, args.role)
+            dssh_ca.generate.generate_user_key(args.name, args.role)
     elif args.action == 'init':
-        initialize.initialize(
+        dssh_ca.initialize.initialize(
             domain=args.domain,
         )
     elif args.action == 'revoke':

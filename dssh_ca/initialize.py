@@ -1,4 +1,4 @@
-import defaults
+import dssh_ca.defaults
 import json
 import logging
 import os
@@ -7,11 +7,11 @@ import sys
 
 def initialize(
     domain,
-    control_name=defaults.CONTROL_FILE_NAME,
-    host_dir=defaults.HOST_DIR_NAME,
-    host_key=defaults.HOST_KEY_NAME,
-    user_dir=defaults.USER_DIR_NAME,
-    user_key=defaults.USER_KEY_NAME
+    control_name=dssh_ca.defaults.CONTROL_FILE_NAME,
+    host_dir=dssh_ca.defaults.HOST_DIR_NAME,
+    host_key=dssh_ca.defaults.HOST_KEY_NAME,
+    user_dir=dssh_ca.defaults.USER_DIR_NAME,
+    user_key=dssh_ca.defaults.USER_KEY_NAME
 ):
     """Initializes configuration."""
 

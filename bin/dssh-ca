@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+
+import dssh_ca.main
+
+dssh_ca.main.main()
